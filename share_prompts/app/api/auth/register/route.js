@@ -7,14 +7,15 @@ export async function POST(req) {
     await connectToDB();
     const { name, email, password } = await req.json();
 
+    // Normalize email
+    const normalizedEmail = email.toLowerCase().trim();
+
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return new Response(
         JSON.stringify({ error: "Email is already in use" }),
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
@@ -24,19 +25,18 @@ export async function POST(req) {
     // Create new user
     await User.create({
       name,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
     });
 
     return new Response(
       JSON.stringify({ message: "User created successfully" }),
-      {
-        status: 201,
-      }
+      { status: 201 }
     );
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Something went wrong" }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({ error: error.message || "Server error" }),
+      { status: 500 }
+    );
   }
 }
