@@ -19,6 +19,7 @@ export default function RegisterPage() {
     },
   });
 
+  //isto são funções do react-hook-form
   const {
     register,
     handleSubmit,
@@ -26,6 +27,8 @@ export default function RegisterPage() {
     formState: { errors },
   } = form;
 
+
+  //função só pra confirmar a password
   function validatePasswordMatch(value) {
     if (value !== getValues().password) {
       return "Passwords don't match";
@@ -33,6 +36,31 @@ export default function RegisterPage() {
     return true;
   }
 
+
+// The POST function is coming from your route.js file, which defines an API route for handling user registration.
+
+// How It Works:
+// Frontend (page.jsx)
+
+// When the form is submitted, the onSubmit function is triggered.
+// This function sends a POST request to "/api/auth/register" using fetch().
+// The request includes user details (name, email, password) in JSON format.
+
+// Backend (route.js)
+
+// This file defines an API route that listens for POST requests.
+// The POST function:
+// Connects to the database.
+// Extracts and normalizes the user input.
+// Checks if the email is already registered.
+// Hashes the password using bcryptjs.
+// Creates a new user in the database.
+// Returns a success or error response.
+// How Next.js Connects Them
+
+// In Next.js, files in app/api/auth/register/route.js (or pages/api in older versions) automatically become API endpoints.
+// When fetch("/api/auth/register") is called in page.jsx, it reaches route.js, processes the request, and sends back a response.
+// That’s why you don’t explicitly see the POST function in page.jsx—it’s handled via API routing in route.js. 🚀
 async function onSubmit(values) {
   try {
     setIsLoading(true);
@@ -136,7 +164,7 @@ async function onSubmit(values) {
                   },
                 })}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                placeholder="john@example.com"
+                placeholder="youremail@example.com"
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">

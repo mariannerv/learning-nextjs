@@ -4,8 +4,8 @@ import { connectToDB } from "../../../../utils/database";
 
 export async function POST(req) {
   try {
-    await connectToDB();
-    const { name, email, password } = await req.json();
+    await connectToDB(); //espera pela ligação ao MONGO
+    const { name, email, password } = await req.json(); //fica à espera dos parametros para criar um utilizador, isto basicamente torna-se numa API Endpoint
 
     // Normalize email
     const normalizedEmail = email.toLowerCase().trim();
